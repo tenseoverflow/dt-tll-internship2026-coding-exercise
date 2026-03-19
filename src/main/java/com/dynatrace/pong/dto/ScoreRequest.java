@@ -1,10 +1,12 @@
 package com.dynatrace.pong.dto;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
+@ValidTableTennisScore
 public class ScoreRequest {
 
     // Also used copilot here to generate boilerplate based on README.
@@ -32,9 +34,11 @@ public class ScoreRequest {
     private Integer player2Points;
 
     @Min(value = 0, message = "Player 1 games must be a number greater than or equal to 0")
+    @Max(value = 5, message = "Player 1 games must not exceed 5")
     private Integer player1Games = 0;
 
     @Min(value = 0, message = "Player 2 games must be a number greater than or equal to 0")
+    @Max(value = 5, message = "Player 2 games must not exceed 5")
     private Integer player2Games = 0;
 
     @NotNull(message = "Match date is required")
