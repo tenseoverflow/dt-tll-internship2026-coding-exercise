@@ -173,10 +173,10 @@ The application starts on **http://localhost:8080**.
 | `playerId2`| Required, must be a valid player ID             |
 | `doublePlayerId1`| Optional, must be a valid player ID             |
 | `doublePlayerId2`| Optional, must be a valid player ID             |
-| `player1Points`| Required, must be a number                     |
-| `player2Points`| Required, must be a number                     |
-| `player1Games`| Optional (by default 0), must be a number                     |
-| `player2Games`| Optional (by default 0), must be a number                     |
+| `player1Points`| Required, must be a number (0-11 with 2 by at least)                     |
+| `player2Points`| Required, must be a number (0-11 with 2 by at least)                    |
+| `player1Games`| Optional (by default 0), must be a number (0-5)                     |
+| `player2Games`| Optional (by default 0), must be a number (0-5)                     |
 | `matchDate`| Required, must be a valid date-time             |
 
 ### Response Example
