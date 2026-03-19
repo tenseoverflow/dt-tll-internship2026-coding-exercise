@@ -12,6 +12,12 @@ A RESTful API built with **Spring Boot 4** and **H2 in-memory database** for man
 - Duplicate email detection
 - **Swagger UI** for interactive API testing
 - **H2 Console** for database inspection
+- **Register** a new match's scores.
+- **Get** a match's score by ID.
+- **List** all match scores.
+- **Delete** a match score by ID.
+- Input **validation** for match scores (player IDs, points, games, date).
+- **Update** a match's score by ID.
 
 ## 🛠️ Tech Stack
 
@@ -90,6 +96,12 @@ The application starts on **http://localhost:8080**.
 | `GET`    | `/api/players/{id}` | Get a player by ID       |
 | `GET`    | `/api/players`      | Get all players          |
 | `DELETE` | `/api/players/{id}` | Delete a player by ID    |
+| `POST`   | `/api/scores`       | Create a new score       |
+| `GET`    | `/api/scores/{matchId}`  | Get a score by match ID        |
+| `GET`    | `/api/scores`       | Get all scores           |
+| `DELETE` | `/api/scores/{matchId}`  | Delete a score by ID  | 
+| `PUT`   | `/api/scores/{matchId}`  | Update match score       |
+
 
 ### Request Body (POST /api/players)
 
@@ -137,6 +149,65 @@ The application starts on **http://localhost:8080**.
 }
 ```
 
+### Request Body (POST /api/scores)
+
+```json
+{
+   "playerId1": 1,
+   "playerId2": 2,
+   "doublePlayerId1": 3, // Optional
+   "doublePlayerId2": 4, // Optional
+  "player1Points": 0,
+  "player2Points": 2,
+  "player1Games": 3,
+  "player2Games": 2,
+  "matchDate": "2026-03-18T10:30:00"
+}
+```
+
+### Validation Rules
+
+| Field       | Rules                                          |
+|------------|------------------------------------------------|
+| `playerId1`| Required, must be a valid player ID             |
+| `playerId2`| Required, must be a valid player ID             |
+| `doublePlayerId1`| Optional, must be a valid player ID             |
+| `doublePlayerId2`| Optional, must be a valid player ID             |
+| `player1Points`| Required, must be a number                     |
+| `player2Points`| Required, must be a number                     |
+| `player1Games`| Optional (by default 0), must be a number                     |
+| `player2Games`| Optional (by default 0), must be a number                     |
+| `matchDate`| Required, must be a valid date-time             |
+
+### Response Example
+
+```json
+{
+  "id": 1,
+   "playerId1": 1,
+   "playerId2": 2,
+   "doublePlayerId1": 3,
+   "doublePlayerId2": 4,
+  "player1Points": 0,
+  "player2Points": 2,
+  "player1Games": 3,
+  "player2Games": 2,
+  "matchDate": "2026-03-18T10:30:00"
+}
+```
+
+### Error Response Example
+
+```json
+{
+  "timestamp": "2026-03-18T10:30:00",
+  "status": 400,
+  "error": "Bad Request",
+  "message": "playerId1: Player 1 ID is required and must be valid, player2Points: Player 2 points must be a number"
+}
+```
+
+
 ## 🧪 Testing with Swagger UI
 
 1. Start the application:
@@ -172,6 +243,38 @@ The application starts on **http://localhost:8080**.
    - Expand `DELETE /api/players/{id}`
    - Click **"Try it out"**
    - Enter the player ID
+   - Click **"Execute"**
+   - See the `204 No Content` response
+
+8. **To create a score:**
+   - Expand `POST /api/scores`
+   - Click **"Try it out"**
+   - Edit the JSON body with score details
+   - Click **"Execute"**
+   - See the `201 Created` response with the score data
+
+9. **To get a score by match ID:**
+   - Expand `GET /api/scores/{matchId}`
+   - Click **"Try it out"**
+   - Enter the match ID
+   - Click **"Execute"**
+
+10. **To get all scores:**
+   - Expand `GET /api/scores`
+   - Click **"Try it out"** → **"Execute"**
+
+11. **To update a score:**
+   - Expand `PUT /api/scores/{matchId}`
+   - Click **"Try it out"**
+   - Enter the match ID
+   - Edit the JSON body with updated score details
+   - Click **"Execute"**
+   - See the `200 OK` response with the updated score data
+
+12. **To delete a score:**
+   - Expand `DELETE /api/scores/{matchId}`
+   - Click **"Try it out"**
+   - Enter the match ID
    - Click **"Execute"**
    - See the `204 No Content` response
 
