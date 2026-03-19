@@ -18,6 +18,11 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
+    @ExceptionHandler(ScoreNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleScoreNotFound(ScoreNotFoundException ex) {
+        return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
     @ExceptionHandler(DuplicateEmailException.class)
     public ResponseEntity<Map<String, Object>> handleDuplicateEmail(DuplicateEmailException ex) {
         return buildResponse(HttpStatus.CONFLICT, ex.getMessage());
@@ -46,4 +51,3 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, status);
     }
 }
-

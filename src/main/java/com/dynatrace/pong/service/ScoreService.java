@@ -1,16 +1,13 @@
 package com.dynatrace.pong.service;
 
-import com.dynatrace.pong.dto.PlayerRequest;
-import com.dynatrace.pong.dto.PlayerResponse;
 import com.dynatrace.pong.dto.ScoreRequest;
 import com.dynatrace.pong.dto.ScoreResponse;
-import com.dynatrace.pong.exception.DuplicateEmailException;
-import com.dynatrace.pong.exception.PlayerNotFoundException;
 import com.dynatrace.pong.exception.ScoreNotFoundException;
-import com.dynatrace.pong.model.Player;
+import com.dynatrace.pong.exception.PlayerNotFoundException;
 import com.dynatrace.pong.model.Score;
-import com.dynatrace.pong.repository.PlayerRepository;
+import com.dynatrace.pong.model.Player;
 import com.dynatrace.pong.repository.ScoreRepository;
+import com.dynatrace.pong.repository.PlayerRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,15 +19,42 @@ import java.util.stream.Collectors;
 public class ScoreService {
 
     private final ScoreRepository scoreRepository;
+    private final PlayerRepository playerRepository;
 
-    public ScoreService(ScoreRepository scoreRepository) {
+    public ScoreService(ScoreRepository scoreRepository, PlayerRepository playerRepository) {
         this.scoreRepository = scoreRepository;
+        this.playerRepository = playerRepository;
     }
 
+    // Used some copilot help here to create a score
     public ScoreResponse createScore(ScoreRequest request) {
-        Score score = new Score(
+        Player player1 = playerRepository.findById(request.getPlayerId1())
+                .orElseThrow(() -> new PlayerNotFoundException(request.getPlayerId1()));
+        Player player2 = playerRepository.findById(request.getPlayerId2())
+                .orElseThrow(() -> new PlayerNotFoundException(request.getPlayerId2()));
 
-        );
+        Player doublePlayer1 = null;
+        if (request.getDoublePlayerId1() != null) {
+            doublePlayer1 = playerRepository.findById(request.getDoublePlayerId1())
+                    .orElseThrow(() -> new PlayerNotFoundException(request.getDoublePlayerId1()));
+        }
+
+        Player doublePlayer2 = null;
+        if (request.getDoublePlayerId2() != null) {
+            doublePlayer2 = playerRepository.findById(request.getDoublePlayerId2())
+                    .orElseThrow(() -> new PlayerNotFoundException(request.getDoublePlayerId2()));
+        }
+
+        Score score = new Score(
+                player1,
+                player2,
+                doublePlayer1,
+                doublePlayer2,
+                request.getPlayer1Points(),
+                request.getPlayer2Points(),
+                request.getPlayer1Games(),
+                request.getPlayer2Games(),
+                request.getMatchDate());
 
         Score saved = scoreRepository.save(score);
         return toResponse(saved);
@@ -56,14 +80,50 @@ public class ScoreService {
         }
         scoreRepository.deleteById(matchId);
     }
+    // Copilot used here to create updateScore method
+
+    public ScoreResponse updateScore(Long matchId, ScoreRequest request) {
+        Score score = scoreRepository.findById(matchId)
+                .orElseThrow(() -> new ScoreNotFoundException(matchId));
+
+        Player player1 = playerRepository.findById(request.getPlayerId1())
+                .orElseThrow(() -> new PlayerNotFoundException(request.getPlayerId1()));
+        Player player2 = playerRepository.findById(request.getPlayerId2())
+                .orElseThrow(() -> new PlayerNotFoundException(request.getPlayerId2()));
+
+        Player doublePlayer1 = null;
+        if (request.getDoublePlayerId1() != null) {
+            doublePlayer1 = playerRepository.findById(request.getDoublePlayerId1())
+                    .orElseThrow(() -> new PlayerNotFoundException(request.getDoublePlayerId1()));
+        }
+
+        Player doublePlayer2 = null;
+        if (request.getDoublePlayerId2() != null) {
+            doublePlayer2 = playerRepository.findById(request.getDoublePlayerId2())
+                    .orElseThrow(() -> new PlayerNotFoundException(request.getDoublePlayerId2()));
+        }
+
+        score.setPlayer1(player1);
+        score.setPlayer2(player2);
+        score.setDoublePlayer1(doublePlayer1);
+        score.setDoublePlayer2(doublePlayer2);
+        score.setPlayer1Points(request.getPlayer1Points());
+        score.setPlayer2Points(request.getPlayer2Points());
+        score.setPlayer1Games(request.getPlayer1Games());
+        score.setPlayer2Games(request.getPlayer2Games());
+        score.setMatchDate(request.getMatchDate());
+
+        Score updated = scoreRepository.save(score);
+        return toResponse(updated);
+    }
 
     private ScoreResponse toResponse(Score score) {
         return new ScoreResponse(
-                score.getId(),
-                score.getPlayerId1(),
-                score.getPlayerId2(),
-                score.getDoublePlayerId1(),
-                score.getDoublePlayerId2(),
+                score.getMatchId(),
+                score.getPlayer1().getId(),
+                score.getPlayer2().getId(),
+                score.getDoublePlayer1() != null ? score.getDoublePlayer1().getId() : null,
+                score.getDoublePlayer2() != null ? score.getDoublePlayer2().getId() : null,
                 score.getPlayer1Points(),
                 score.getPlayer2Points(),
                 score.getPlayer1Games(),
