@@ -296,20 +296,27 @@ You can inspect the database directly:
 src/main/java/com/dynatrace/pong/
 ├── PongApplication.java              # Application entry point
 ├── controller/
-│   └── PlayerController.java         # REST controller with validation
+│   ├── PlayerController.java         # REST controller with validation
+│   └── ScoreController.java          # REST controller with validation
 ├── dto/
 │   ├── PlayerRequest.java            # Input DTO with validation annotations
-│   └── PlayerResponse.java           # Output DTO
+│   ├── PlayerResponse.java           # Output DTO
+│   ├── ScoreRequest.java             # Input DTO with validation annotations
+│   └── ScoreResponse.java            # Output DTO
 ├── exception/
 │   ├── DuplicateEmailException.java  # Thrown when email already exists
 │   ├── GlobalExceptionHandler.java   # Centralized error handling
-│   └── PlayerNotFoundException.java  # Thrown when player not found
+│   ├── PlayerNotFoundException.java  # Thrown when player not found
+│   └── ScoreNotFoundException.java   # Thrown when score not found
 ├── model/
-│   └── Player.java                   # JPA entity
+│   ├── Player.java                   # JPA entity
+│   └── Score.java                    # JPA entity
 ├── repository/
-│   └── PlayerRepository.java         # Spring Data JPA repository
+│   ├── PlayerRepository.java         # Spring Data JPA repository
+│   └── ScoreRepository.java          # Spring Data JPA repository
 └── service/
-    └── PlayerService.java            # Business logic layer
+    ├── PlayerService.java            # Business logic layer
+    └── ScoreService.java             # Business logic layer
 
 src/test/java/com/dynatrace/pong/
 ├── PongApplicationTests.java         # Context load test
