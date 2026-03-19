@@ -20,18 +20,18 @@ public class ScoreController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PlayerResponse> getPlayerById(@PathVariable Long id) {
-        return ResponseEntity.ok(playerService.getPlayerById(id));
+    public ResponseEntity<ScoreResponse> getScoreById(@PathVariable Long id) {
+        return ResponseEntity.ok(scoreService.getScoreById(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<PlayerResponse>> getAllPlayers() {
-        return ResponseEntity.ok(playerService.getAllPlayers());
+    public ResponseEntity<List<ScoreResponse>> getAllScores() {
+        return ResponseEntity.ok(scoreService.getAllScores());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePlayer(@PathVariable Long id) {
-        playerService.deletePlayer(id);
+    public ResponseEntity<Void> deleteScore(@PathVariable Long id) {
+        scoreService.deleteScore(id);
         return ResponseEntity.noContent().build();
     }
 }

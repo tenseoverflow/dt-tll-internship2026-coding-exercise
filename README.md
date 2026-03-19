@@ -183,7 +183,7 @@ The application starts on **http://localhost:8080**.
 
 ```json
 {
-  "id": 1,
+  "matchId": 1,
    "playerId1": 1,
    "playerId2": 2,
    "doublePlayerId1": 3,
@@ -246,7 +246,7 @@ The application starts on **http://localhost:8080**.
    - Click **"Execute"**
    - See the `204 No Content` response
 
-8. **To create a score:**
+8. **To create a score:** <!-- Used a bit copilot's tab help here -->
    - Expand `POST /api/scores`
    - Click **"Try it out"**
    - Edit the JSON body with score details
