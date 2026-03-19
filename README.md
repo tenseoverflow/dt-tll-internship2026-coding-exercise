@@ -302,7 +302,9 @@ src/main/java/com/dynatrace/pong/
 │   ├── PlayerRequest.java            # Input DTO with validation annotations
 │   ├── PlayerResponse.java           # Output DTO
 │   ├── ScoreRequest.java             # Input DTO with validation annotations
-│   └── ScoreResponse.java            # Output DTO
+│   ├── ScoreResponse.java            # Output DTO
+│   ├── TableTennisScoreValidator.java            # Table tennis score validator
+│   └── ValidTableTennisScore.java            # Table tennis score validation
 ├── exception/
 │   ├── DuplicateEmailException.java  # Thrown when email already exists
 │   ├── GlobalExceptionHandler.java   # Centralized error handling
